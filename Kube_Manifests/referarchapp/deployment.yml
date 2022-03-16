@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: referarchapp
+  labels:
+    app: referarchapp
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: referarchapp
+      labels:
+        app: referarchapp
+    spec:
+      containers:
+        - name: referarchapp
+          image: i386kernel/refapp:2.0
+          imagePullPolicy: Always
+          env:
+          - name: MYSQL_USER
+            value: root
+          - name:  MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysqlsecret
+                key: mysql-password
+          - name: MYSQL_DB_NAME
+            value: referenceArchDB
+          - name: MYSQL_SVC
+            value: mysqlsvc
+          - name: MINIO_ENDPOINT
+            value: miniosvc
+          - name: MINIO_ROOT_USER
+            value: minio
+          - name: MINIO_ROOT_PASSWORD
+            value: minio123
+          - name: MINIO_BUCKET_NAME
+            value: rabucket
+          volumeMounts:
+          - name: refer-arch-vol
+            mountPath: /usr/src/app/data
+      imagePullSecrets:
+        - name: dockersecret
+      restartPolicy: Always
+      volumes:
+      - name: refer-arch-vol
+        persistentVolumeClaim:
+          claimName: refer-arch-claim
+  selector:
+    matchLabels:
+      app: referarchapp

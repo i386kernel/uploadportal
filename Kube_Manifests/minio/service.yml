@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: miniosvc
+spec:
+  selector:
+    app: minio
+  ports:
+  - name: minioconsole
+    port: 80
+    targetPort: 9001
+    protocol: TCP
+  - name: minioendpoint
+    port: 9000
+    targetPort: 9000
+    protocol: TCP
+  type: LoadBalancer

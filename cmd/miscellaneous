@@ -1,0 +1,47 @@
+
+
+CREATE DATABASE referencearch;
+CREATE TABLE ratable(
+    authorname varchar(255),
+    subject varchar(255),
+    version varchar(255),
+    datetime varchar(255),
+    objectstorekey varchar(1000)
+);
+
+dbUser+":"+dbPass+"@tcp(localhost:3306)/"+dbName
+
+docker run --name mysqlui \
+ -p 3306:3306 \
+ -e MYSQL_ROOT_PASSWORD=passw0rd \
+ -d mysql:8.0
+
+docker run --name minios3 \
+-p 9000:9000 \
+-e "MINIO_ACCESS_KEY=minio" \
+-e "MINIO_SECRET_KEY=minio123" \
+-d minio/minio server --console-address :9001 /data
+
+docker run \
+  -p 9000:9000 \
+  -p 9001:9001 \
+  -e "MINIO_ROOT_USER=minio" \
+  -e "MINIO_ROOT_PASSWORD=minio123" \
+  quay.io/minio/minio server /data --console-address ":9001"
+
+
+	mysqlcreds.DBuser = os.Getenv("MYSQL_USER")
+	mysqlcreds.DBPass = os.Getenv("MYSQL_ROOT_PASSWORD")
+	mysqlcreds.DBName = os.Getenv("MYSQL_DB_NAME")
+	mysqlcreds.DBsvc = os.Getenv("MYSQL_SVC")
+
+	minIOCreds.Endpoint = os.Getenv("MINIO_ENDPOINT")
+	minIOCreds.AccessKeyID = os.Getenv("MINIO_ROOT_USER")
+	minIOCreds.SecretAccessKey = os.Getenv("MINIO_ROOT_PASSWORD")
+	minios3object.Bucketname = os.Getenv("MINIO_BUCKET_NAME")
+
+export 	MYSQL_USER=root
+export  MYSQL_ROOT_PASSWORD=passw0rd
+export  MYSQL_DB_NAME=somedb
+export  MYSQL_SVC=mysqlsvc
+
