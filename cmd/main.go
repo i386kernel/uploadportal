@@ -57,21 +57,7 @@ func init() {
 		if err != nil {
 			fmt.Println(err)
 		}
-	} else {
-		fmt.Println("MySQL not detected, deploying sqlite3 database")
-		db, err := sql.Open("sqlite3", "./data/refarch.db")
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		// Create schema relevant table
-		_, err = db.Exec("CREATE TABLE IF NOT EXISTS ratable(authorname TEXT, subject TEXT, version TEXT, datetime DATETIME, localfilename TEXT, objectstorekey TEXT)")
-		if err != nil {
-			fmt.Println(err)
-		}
-		db.Close()
 	}
-
 	if _, ok := os.LookupEnv("MINIO_BUCKET_NAME"); ok {
 		fmt.Println("MINIO config found, accessing MINIO")
 		minIOCreds.Endpoint = os.Getenv("MINIO_ENDPOINT")

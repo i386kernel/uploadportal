@@ -9,7 +9,6 @@ import (
 	"mysqulcrud/internal/users"
 	"mysqulcrud/pkg/miniopkg"
 	"mysqulcrud/pkg/mysqlpkg"
-	"mysqulcrud/pkg/sqlitepkg"
 	"net/http"
 	"os"
 	"os/exec"
@@ -21,7 +20,6 @@ import (
 
 var mysqltable = mysqlpkg.RATable{}
 var minios3object = miniopkg.MinIOObjOptions{}
-var sqlitetable = sqlitepkg.RATable{}
 
 // DefaultHandler handles the first home page request by the client
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
@@ -147,14 +145,6 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		mysqltable.Dbcreds = mysqlcreds
 		fmt.Println("MYSQL TABLE Object: ", mysqltable)
 		mysqltable.InsertRA()
-	} else {
-		sqlitetable.AuthorName = r.FormValue("aname")
-		sqlitetable.Subject = r.FormValue("subject")
-		sqlitetable.Version = r.FormValue("version")
-		sqlitetable.DateTime = r.FormValue("date")
-		sqlitetable.LocalFileName = uploadedfilename
-		sqlitetable.ObjectStoreKey = uploadedfilepath
-		sqlitetable.Insert()
 	}
 
 	// Lookup S3 bucket name and upload object to minio
@@ -184,21 +174,6 @@ func UploadSuccessHandler(w http.ResponseWriter, r *http.Request) {
 
 // DownloadHandler handles the download of files
 func DownloadHandler(w http.ResponseWriter, r *http.Request) {
-
-	sqlnew := sqlitepkg.Newsqlite()
-	ralist := sqlnew.Query()
-	for i, v := range ralist {
-		fmt.Println(i, v)
-	}
-	fp := path.Join("static", "download.html")
-	tmpl, err := template.ParseFiles(fp)
-	if err != nil {
-		fmt.Println(err)
-	}
-	if err := tmpl.Execute(w, ralist); err != nil {
-		fmt.Println(err)
-		return
-	}
 
 	if _, ok := os.LookupEnv("MYSQL_DB_NAME"); ok {
 		mysql := mysqlpkg.MewMysqlClient()
