@@ -3,8 +3,8 @@ build:
 	chmod 777 refarchapp
 
 imgbuild:
-	docker build -t i386kernel/refapp:"${IMG_VER}" .
+	docker build -t i386kernel/ra-portal:"${IMG_VER}" .
 
 imgpush:
-	docker push i386kernel/refapp:${IMG_VER}
+	docker push i386kernel/ra-portal:${IMG_VER}
 

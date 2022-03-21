@@ -45,3 +45,15 @@ export  MYSQL_ROOT_PASSWORD=passw0rd
 export  MYSQL_DB_NAME=somedb
 export  MYSQL_SVC=mysqlsvc
 
+
+
+8909f0a8-50df-4b66-9d84-67ef6c6be7f1
+
+https://surf.wavefront.com/u/45BTWHXPbw?t=tanzu-solutions-engineering
+
+73fb72eb-dd44-4279-b4cc-752e0c11e6e7
+
+https://surf.wavefront.com/api/v2/source' -H 'Authorization: Bearer 73fb72eb-dd44-4279-b4cc-752e0c11e6e7'
+
+https://surf.wavefront.com/u/CLpzKKHfwr?t=tanzu-solutions-engineering
+

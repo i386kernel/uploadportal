@@ -12,7 +12,9 @@ import (
 	"mysqulcrud/pkg/sqlitepkg"
 	"net/http"
 	"os"
+	"os/exec"
 	"path"
+	"runtime"
 	"strings"
 	"text/template"
 )
@@ -101,6 +103,13 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 	log.SetOutput(flog)
+	if runtime.GOOS != "darwin" {
+		out, err := exec.Command("cat /proc/sys/kernel/hostname").Output()
+		if err != nil {
+			fmt.Println(err)
+		}
+		log.Printf("Request Processed in Pod: %s\n", out)
+	}
 	log.Println("----------------------------------------------------------------------------")
 	log.Println(r.FormValue("date"))
 	log.Println("----------------------------------------------------------------------------")
