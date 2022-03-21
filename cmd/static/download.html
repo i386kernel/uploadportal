@@ -52,7 +52,7 @@
      <ul class="list-group">
          {{with . }}
          {{ range . }}
-         <li class="list-group-item list-group-item-success"><h6>Author Name: {{ .AuthorName }}, Subject: {{ .Subject }}, Version: {{ .Version }}, DateTime: {{ .DateTime }} </h6><a href="/downloadfile/{{ .LocalFileName }}" download> Download </a> </li>
+         <li class="list-group-item list-group-item-success"><h6>Author Name: {{ .AuthorName }}, Subject: {{ .Subject }}, Version: {{ .Version }}, DateTime: {{ .DateTime }} </h6><a href="/downloadfile/{{ .ObjectStoreKey }}" download> Download </a> </li>
          {{end}}
          {{end}}
          <p></p>

@@ -108,7 +108,9 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Println(err)
 		}
+		log.Println("----------------------------------------------------------------------------")
 		log.Printf("Request Processed in Pod: %s\n", out)
+		log.Println("----------------------------------------------------------------------------")
 	}
 	log.Println("----------------------------------------------------------------------------")
 	log.Println(r.FormValue("date"))
