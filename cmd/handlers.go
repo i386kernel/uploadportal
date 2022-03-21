@@ -104,7 +104,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	log.SetOutput(flog)
 	if runtime.GOOS != "darwin" {
-		out, err := exec.Command("cat /proc/sys/kernel/hostname").Output()
+		out, err := exec.Command("cat", "/proc/sys/kernel/hostname").Output()
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -143,10 +143,8 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		mysqltable.DateTime = r.FormValue("date")
 		mysqltable.ObjectStoreKey = uploadedfilename
 		fmt.Println("Inserted Metadata to DB")
-
-		mysqltable.Dbcreds = mysqlcreds
 		fmt.Println("MYSQL TABLE Object: ", mysqltable)
-		mysqltable.InsertRA()
+		mysqltable.InsertRA(mysqlcreds)
 	}
 
 	// Lookup S3 bucket name and upload object to minio
@@ -177,24 +175,9 @@ func UploadSuccessHandler(w http.ResponseWriter, r *http.Request) {
 // DownloadHandler handles the download of files
 func DownloadHandler(w http.ResponseWriter, r *http.Request) {
 
-	//sqlnew := sqlitepkg.Newsqlite()
-	//ralist := sqlnew.Query()
-	//for i, v := range ralist {
-	//	fmt.Println(i, v)
-	//}
-	//fp := path.Join("static", "download.html")
-	//tmpl, err := template.ParseFiles(fp)
-	//if err != nil {
-	//	fmt.Println(err)
-	//}
-	//if err := tmpl.Execute(w, ralist); err != nil {
-	//	fmt.Println(err)
-	//	return
-	//}
-
 	if _, ok := os.LookupEnv("MYSQL_DB_NAME"); ok {
 		mysql := mysqlpkg.MewMysqlClient()
-		ralist := mysql.Query()
+		ralist := mysql.Query(mysqlcreds)
 		for i, v := range ralist {
 			fmt.Println(i, v)
 		}

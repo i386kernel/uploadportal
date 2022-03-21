@@ -26,6 +26,7 @@ func init() {
 
 	if _, ok := os.LookupEnv("MYSQL_DB_NAME"); ok {
 		fmt.Println("MYSQL config found, Waiting for Mysql Service to be ready")
+		fmt.Println(mysqlcreds.DBuser, mysqlcreds.DBPass, mysqlcreds.DBName, mysqlcreds.DBsvc)
 		mysqlcreds.DBuser = os.Getenv("MYSQL_USER")
 		mysqlcreds.DBPass = os.Getenv("MYSQL_ROOT_PASSWORD")
 		mysqlcreds.DBName = os.Getenv("MYSQL_DB_NAME")
