@@ -32,6 +32,5 @@ spec:
         - name: dockersecret
       volumes:
         - name: mysql-persistent-storage
-          emptyDir: {}
-#          persistentVolumeClaim:
-#            claimName: mysql-pv-claim
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
