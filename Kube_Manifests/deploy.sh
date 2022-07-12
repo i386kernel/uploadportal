@@ -1,25 +1,23 @@
 #!/bin/bash
 
-echo "creating minio namespace"
-kubectl create namespace minio
+echo "creating application namespace"
 
-echo "changing context"
-kubectl config set-context --current --namespace=minio
+kubectl create namespace ra-portal
+kubectl config set-context --current --namespace=ra-portal
 
 echo "deploying minio"
 kubectl apply -f minio
 
-sleep 10s
-
-echo "creating application namespace"
-kubectl create namespace referarchapp
-kubectl config set-context --current --namespace=referarchapp
-
 echo "Deploying MySQL"
 kubectl apply -f mysql
 
-sleep 10s
+sleep 20s
 
 echo "Creating RefArchPortal"
-kubectl apply -f referarchapp
+kubectl apply -f ra-portal
 
+echo "Bringing up app"
+
+sleep 20s
+
+kubectl get service
