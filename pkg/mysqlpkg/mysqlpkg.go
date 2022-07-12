@@ -14,32 +14,30 @@ type Dbcreds struct {
 }
 
 type RATable struct {
-	Dbcreds        Dbcreds
 	AuthorName     string
 	Subject        string
 	Version        string
 	DateTime       string
-	LocalFileName  string
 	ObjectStoreKey string
 }
 
-func MewMysqlClient() RATable {
-	return RATable{}
+func MewMysqlClient() *RATable {
+	return &RATable{}
 }
 
 // InsertRA inserts data to ratable in referencearch database
-func (rt *RATable) InsertRA() {
-	datasource := fmt.Sprintf("%s:%s%s/%s", rt.Dbcreds.DBuser, rt.Dbcreds.DBPass, rt.Dbcreds.DBsvc, rt.Dbcreds.DBName)
+func (rt *RATable) InsertRA(dbcreds Dbcreds) {
+	datasource := fmt.Sprintf("%s:%s%s/%s", dbcreds.DBuser, dbcreds.DBPass, dbcreds.DBsvc, dbcreds.DBName)
 	fmt.Println("Datasource: ", datasource)
 	mydbconn, err := sql.Open("mysql", datasource)
 	if err != nil {
 		panic(err.Error())
 	}
-	stmt, err := mydbconn.Prepare("INSERT INTO ratable(authorName, subject, version, datetime, localfilename, objectstorekey) VALUES(?,?,?,?,?,?)")
+	stmt, err := mydbconn.Prepare("INSERT INTO ratable(authorName, subject, version, datetime, objectstorekey) VALUES(?,?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
-	_, err = stmt.Exec(rt.AuthorName, rt.Subject, rt.Version, rt.DateTime, rt.LocalFileName, rt.ObjectStoreKey)
+	_, err = stmt.Exec(rt.AuthorName, rt.Subject, rt.Version, rt.DateTime, rt.ObjectStoreKey)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -50,9 +48,9 @@ func (rt *RATable) InsertRA() {
 	}(mydbconn)
 }
 
-func (rt *RATable) Query() []RATable {
+func (rt *RATable) Query(dbcreds Dbcreds) []RATable {
 
-	datasource := fmt.Sprintf("%s:%s%s/%s", rt.Dbcreds.DBuser, rt.Dbcreds.DBPass, rt.Dbcreds.DBsvc, rt.Dbcreds.DBName)
+	datasource := fmt.Sprintf("%s:%s%s/%s", dbcreds.DBuser, dbcreds.DBPass, dbcreds.DBsvc, dbcreds.DBName)
 	fmt.Println("Datasource: ", datasource)
 	db, err := sql.Open("mysql", datasource)
 	if err != nil {
@@ -65,7 +63,7 @@ func (rt *RATable) Query() []RATable {
 	rlist := make([]RATable, 0)
 	for rows.Next() {
 		rtable := RATable{}
-		err := rows.Scan(&rtable.AuthorName, &rtable.Subject, &rtable.Version, &rtable.DateTime, &rtable.LocalFileName, &rtable.ObjectStoreKey)
+		err := rows.Scan(&rtable.AuthorName, &rtable.Subject, &rtable.Version, &rtable.DateTime, &rtable.ObjectStoreKey)
 		if err != nil {
 			fmt.Println(err)
 		}

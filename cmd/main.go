@@ -23,7 +23,6 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-
 	if _, ok := os.LookupEnv("MYSQL_DB_NAME"); ok {
 		fmt.Println("MYSQL config found, Waiting for Mysql Service to be ready")
 		fmt.Println(mysqlcreds.DBuser, mysqlcreds.DBPass, mysqlcreds.DBName, mysqlcreds.DBsvc)
@@ -53,11 +52,13 @@ func init() {
 			fmt.Println(err)
 		}
 		fmt.Println("Running Init, Instantiating Objects")
-		fmt.Println("Reading ENV's, Grabbing Values")
-		_, err = mydbconn.Exec("CREATE TABLE IF NOT EXISTS ratable(authorname varchar(255), subject varchar(255), version varchar(255), datetime varchar(255), localfilename varchar(255), objectstorekey varchar(1000))")
+		fmt.Println("Reading ENVs, Grabbing Values")
+		_, err = mydbconn.Exec("CREATE TABLE IF NOT EXISTS ratable(authorname varchar(255), subject varchar(255), version varchar(255), datetime varchar(255), objectstorekey varchar(1000))")
 		if err != nil {
 			fmt.Println(err)
 		}
+	} else {
+		log.Fatal("MySQL not detected")
 	}
 	if _, ok := os.LookupEnv("MINIO_BUCKET_NAME"); ok {
 		fmt.Println("MINIO config found, accessing MINIO")

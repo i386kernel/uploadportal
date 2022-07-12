@@ -21,8 +21,6 @@ import (
 var mysqltable = mysqlpkg.RATable{}
 var minios3object = miniopkg.MinIOObjOptions{}
 
-//var sqlitetable = sqlitepkg.RATable{}
-
 // DefaultHandler handles the first home page request by the client
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "text/html")
@@ -180,6 +178,7 @@ func DownloadHandler(w http.ResponseWriter, r *http.Request) {
 	if _, ok := os.LookupEnv("MYSQL_DB_NAME"); ok {
 		mysql := mysqlpkg.MewMysqlClient()
 		ralist := mysql.Query(mysqlcreds)
+		fmt.Println(ralist)
 		for i, v := range ralist {
 			fmt.Println(i, v)
 		}
